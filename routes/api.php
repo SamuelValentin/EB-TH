@@ -9,5 +9,5 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/reset', [TakeHomeController::class, 'reset'])->name('reset');
-Route::get('/balance', [TakeHomeController::class, 'balance'])->name('balance');
-Route::post('/event', [TakeHomeController::class, 'event'])->name('event');
+Route::get('/balance', [TakeHomeController::class, 'getBalance'])->name('balance');
+Route::post('/event', [TakeHomeController::class, 'postEvent'])->name('event');

@@ -2,19 +2,45 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\BalanceService;
+use App\Services\EventService;
 use Illuminate\Http\Request;
 
 class TakeHomeController extends Controller
 {
+    public static array $accounts = [
+        "1" => ["balance" => 100],
+        "2" => ["balance" => 200],
+    ];
+    private $eventService;
+    private $balanceService;
+
+    public function __construct(EventService $eventService, BalanceService $balanceService)
+    {
+        $this->eventService = $eventService;
+        $this->balanceService = $balanceService;
+    }
+
     public function reset(){
-
+        self::$accounts = [];
+        return response()->json("OK", 200);
     }
 
-    public function balance(Request $request){
-
+    public function getBalance(Request $request){
+        try {
+            $balance = $this->balanceService->getBalance($request, self::$accounts);
+            return response()->json($balance, 201);
+        } catch (\Throwable $th) {
+            return response()->json(0, 404);
+        }
     }
 
-    public function event(Request $request){
-
+    public function postEvent(Request $request){
+        try {
+            $event = $this->eventService->postEvent($request, self::$accounts);
+            return response()->json($event, 201);
+        } catch (\Throwable $th) {
+            return response()->json(0, 404);
+        }
     }
 }
