@@ -8,10 +8,7 @@ use Illuminate\Http\Request;
 
 class TakeHomeController extends Controller
 {
-    public static array $accounts = [
-        "1" => ["balance" => 100],
-        "2" => ["balance" => 200],
-    ];
+    public static array $accounts = [];
     private $eventService;
     private $balanceService;
 
