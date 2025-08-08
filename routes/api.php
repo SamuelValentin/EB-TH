@@ -8,6 +8,6 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('/reset', [TakeHomeController::class, 'reset'])->name('reset');
+Route::post('/reset', [TakeHomeController::class, 'reset'])->name('reset');
 Route::get('/balance', [TakeHomeController::class, 'getBalance'])->name('balance');
 Route::post('/event', [TakeHomeController::class, 'postEvent'])->name('event');
