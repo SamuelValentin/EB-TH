@@ -10,17 +10,17 @@ class TakeHomeTest extends TestCase
     public function take_home_api_test_sequence()
     {
         // Reset state before starting tests
-        $this->postJson('/api/reset')
-            ->assertStatus(200)
-            ->assertExactJson(["OK"]);
+        $this->postJson('/reset')
+                ->assertStatus(200)
+                ->assertSeeText('OK');
 
         // Get balance for non-existing account
-        $this->getJson('/api/balance?account_id=1234')
+        $this->getJson('/balance?account_id=1234')
             ->assertStatus(404)
             ->assertExactJson([0]);
 
         // Create account with initial balance
-        $this->postJson('/api/event', [
+        $this->postJson('/event', [
             'type' => 'deposit',
             'destination' => '100',
             'amount' => 10
@@ -34,7 +34,7 @@ class TakeHomeTest extends TestCase
             ]);
 
         // Deposit into existing account
-        $this->postJson('/api/event', [
+        $this->postJson('/event', [
             'type' => 'deposit',
             'destination' => '100',
             'amount' => 10
@@ -48,12 +48,12 @@ class TakeHomeTest extends TestCase
             ]);
 
         // Get balance for existing account
-        $this->getJson('/api/balance?account_id=100')
-            ->assertStatus(201)
+        $this->getJson('/balance?account_id=100')
+            ->assertStatus(200)
             ->assertExactJson([20]);
 
         // Withdraw from non-existing account
-        $this->postJson('/api/event', [
+        $this->postJson('/event', [
             'type' => 'withdraw',
             'origin' => '200',
             'amount' => 10
@@ -62,7 +62,7 @@ class TakeHomeTest extends TestCase
             ->assertExactJson([0]);
 
         // Withdraw from existing account
-        $this->postJson('/api/event', [
+        $this->postJson('/event', [
             'type' => 'withdraw',
             'origin' => '100',
             'amount' => 5
@@ -76,7 +76,7 @@ class TakeHomeTest extends TestCase
             ]);
 
         // Transfer from existing account
-        $this->postJson('/api/event', [
+        $this->postJson('/event', [
             'type' => 'transfer',
             'origin' => '100',
             'amount' => 15,
@@ -95,7 +95,7 @@ class TakeHomeTest extends TestCase
             ]);
 
         // Transfer from non-existing account
-        $this->postJson('/api/event', [
+        $this->postJson('/event', [
             'type' => 'transfer',
             'origin' => '200',
             'amount' => 15,
